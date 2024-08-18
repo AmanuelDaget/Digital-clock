@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+ <html>
+   <head>
+      <meta charset="utf-8" >
+      <title>tadd27</title>
+     
+      <style type="text/css">
+      *{
+       box-sizing:border-box;
+      }
+      body {
+      background:black;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:500px;
+      overflow:hidden;
+      }
+      .wholeClock {
+       position:absolute;
+       top:50%;
+       left:50%;
+       transform:translate(-50%,-50%);
+       width:350px;
+       height:500px;
+       overflow:hidden;
+       background:black;
+       align-items:center;
+      }
+      .clock {
+      position:relative;
+      width:300px;
+      height:300px;
+      border-radius:50%;
+      background:black;
+      margin:0 auto;
+      margin-top:25px;
+      box-shadow:2px 3px 16px 8px white,4px 5px 6px 16px gray;
+      }
+      .clock .number { 
+      --rotation:0;
+      position:absolute;
+      width:100%;
+      height:100%;
+      font-size:22px;
+      text-align:center;
+      color:white;
+      transform:rotate(var(--rotation));
+      }
+      .clock .n1 {--rotation:30deg;}
+      .clock .n2 {--rotation:60deg;}
+      .clock .n3 {--rotation:90deg;}
+      .clock .n4 {--rotation:120deg;}
+      .clock .n5 {--rotation:150deg;}
+      .clock .n6 {--rotation:180deg;}
+      .clock .n7 {--rotation:210deg;}
+      .clock .n8 {--rotation:240deg;}
+      .clock .n9 {--rotation:270deg;}
+      .clock .n10 {--rotation:300deg;}
+      .clock .n11 {--rotation:330deg;}
+      
+      .clock .hand {
+      --rotation:0;
+       position:absolute;
+       width:5px;
+       height:50%;
+       bottom:50%;
+       left:50%;
+       transform-origin:bottom;
+       transform:translateX(-50%) rotate(calc(var(--rotation)*1deg));
+       background:black;
+       border-top-right-radius:12px;
+       border-top-left-radius:12px;
+      }
+      .clock .hour {
+      width:9px;
+      height:35%;
+      background:green;
+      }
+      .clock .minute {
+      width:6px;
+      height:40%;
+      background:orange;
+      }
+      .clock .second {
+      width:3px;
+      height:43%;
+      background:red;
+      }
+      .clock::after{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      transform:translate(-50%,-50%);
+      width:16px;
+      height:16px;
+      background:blue;
+      border-radius:50%;
+      z-index:50%;
+      }
+      
+      .watch {
+      position:absolute;
+      bottom:10px;
+      width:300px;
+      height:100px;
+      background:black;
+      color:white;
+      left:25px;
+      border-radius:19px;
+      box-shadow:2px 3px 16px 8px white,4px 5px 6px 16px gray;
+      text-align:center;
+      }
+      .watch h1{
+      position:relative;
+      text-align:center;
+      font-size:42px;
+     
+      }
+      .head {
+      position:absolute;
+      top:5px;
+      margin:6px;
+      }
+      .head span{
+      position:relative;
+      color:white;
+      font-size:40px;
+      padding:5px 23px;
+      
+      box-shadow:2px 2px 4px 3px white,2px 2px 3px 3px gray;
+      
+      
+      }
+      </style>
+   </head>
+   <body>
+      <div class="head" >
+         <span>C</span><span>l</span><span>o</span><span>c</span><span>k</span>
+      </div>
+      <div class="wholeClock" >
+       <div class="clock" >
+          <div class="hand hour" hour-Hand ></div>
+          <div class="hand minute" minute-Hand></div>
+          <div class="hand second" second-Hand ></div>
+          <div class="number n1" >1</div>
+          <div class="number n2" >2</div>
+          <div class="number n3" >3</div>
+          <div class="number n4" >4</div>
+          <div class="number n5" >5</div>
+          <div class="number n6" >6</div>
+          <div class="number n7" >7</div>
+          <div class="number n8" >8</div>
+          <div class="number n9" >9</div>
+          <div class="number n10" >10</div>
+          <div class="number n11" >11</div>
+          <div class="number n12" >12</div>
+       </div>
+       <div class="watch" >
+          <h1 id="numberClock" ></h1>
+       </div>
+     </div>
+     
+     
+      <script>
+       setInterval(myClock,1000);
+       
+       var hourHand=document.querySelector('[hour-hand]');
+       var minuteHand=document.querySelector('[minute-hand]');
+       var secondHand=document.querySelector('[second-hand]');
+       
+       
+       function myClock(){
+        var currentDate=new Date();
+        var secondRatio=currentDate.getSeconds()/60;
+        var minuteRatio=(secondRatio + currentDate.getMinutes())/60;
+        var hourRatio=(minuteRatio + currentDate.getHours())/12;
+        
+        setRotation(secondHand,secondRatio);
+        setRotation(minuteHand,minuteRatio);
+        setRotation(hourHand,hourRatio);
+       }
+       function setRotation(element,rotationRatio){
+        element.style.setProperty("--rotation",rotationRatio*360);
+       }
+       
+       myClock();
+       
+       
+       var currentDate=new Date();
+       var currentHour=currentDate.getHours();
+       var currentMinute=currentDate.getMinutes();
+       var currentSecond=currentDate.getSeconds();
+       
+       var str;
+       if(currentHour>12){
+       str="pm";
+       }else{
+       str="am";
+       }
+       
+      setInterval(function(){
+      currentSecond++;
+      var x="",y="",z="";
+      if(currentSecond==60){
+      currentMinute++;
+      currentSecond=0;
+      }
+      if(currentSecond==60){
+      currentHour++;
+      currentMinute=0;
+      }
+      if(currentHour>12){
+      currentHour-=12;
+      }
+      if(currentSecond<10){
+      z=0;
+      }
+      if(currentMinute<10){
+      y=0;
+      }
+      if(currentHour>12 || currentHour<10){
+      x=0;
+      }
+      
+      document.getElementById("numberClock").innerHTML=x + currentHour + ":" + y + currentMinute + ":" + z + currentSecond + " " + str;
+      
+      },1000);
+      </script>
+    
+   </body>
+</html>
